@@ -1,0 +1,22 @@
+<div class="pure-u-1 pure-u-lg-1-2" id="second-el-header"><!-- second el. of header START-->
+<!-- here goes image, gallery, and documents adding -->
+
+<form class="pure-form" method="post" enctype="multipart/form-data">
+  <!-- UploadImage form start -->
+  {{ update.hidden_tag() }}
+
+  <p class="form-label"> {{ update.image.label }} </p><br>
+  <p> {{ update.descr.label }} </p> <br>
+    <div id="add-img-descr" type="text" class="pure-input-1-2">{{ update.descr() }}</div>
+    {% for error in update.image.errors %}
+    <span style="color:red;">[{{ error }}]</span>
+    {% endfor %}
+  <p id="add-img" class="pure-button">{{ update.image() }}</p>
+  <p class="pure-button click-for-hide">{{ update.add() }}</p>
+</form>
+<ul class="hide-align">
+  <li>
+<span class="hide-el"> <img title="Schowaj" src="{{ url_for('static', filename='icons/hide.png') }}" alt="Schowaj"> </span>
+  </li>
+</ul>
+  </div><!-- second el. of header ends -->

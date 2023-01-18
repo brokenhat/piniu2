@@ -1,0 +1,186 @@
+@app.route('/edit', methods=['GET', 'POST'])
+@login_required  # decorator
+def edit():
+    form = PostForm()
+    pageform = NewPage()
+
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(Post.timestamp.desc()).paginate(
+        page, app.config['POSTS_PER_PAGE'], False)
+    next_url = url_for('edit', page=posts.next_num) \
+        if posts.has_next else None
+    prev_url = url_for('edit', page=posts.next_num) \
+        if posts.has_prev else None
+
+# Adding pages
+    pages = Page.query.order_by(Page.id.desc())
+    if pageform.validate_on_submit():
+        page = Page(title=pageform.title.data)
+        db.session.add(page)
+        db.session.commit()
+        flash('Strona została dodana.')
+        return redirect(url_for('edit'))
+
+# Adding posts
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Zmiany zostały opublikowane!')
+        return redirect(url_for('edit'))
+
+    return render_template('edit.html', title='Strona główna - Edycja',
+                            form=form, posts=posts.items,
+                            next_url=next_url,
+                            prev_url=prev_url,
+                            pages=pages, pageform=pageform)
+
+
+
+
+                            <!-- ramka szerokości dla grida -->
+                            <!--
+                            <span class="ramka" style="width:100%; postion:relative;">
+                            <div class="half">
+                            <hr id="one" class="pure-u-1 pure-u-lg-1-2"></hr>
+                             <hr id="two" class="pure-u-1 pure-u-lg-1-3"></hr>
+                            </div>
+                            <div class="third">
+                            <hr id="three" class="pure-u-1 pure-u-lg-1-4"></hr>
+                             <hr id="four" class="pure-u-1 pure-u-lg-1-5" style="right:0px"></hr>
+                            </div>
+                            <hr id="under"></hr>
+                            </span> /////////////////////////////////////////////ramka end-->
+
+
+
+<!--3--><!--<li class="pure-menu-item menu-item-divided"><a class="pure-menu-link" href="{{ url_for('edit') }}">Edycja - Strona główna</a></li>-->
+
+
+function lay1_1(sourceElem) {
+    var class1_1 = 'pure-u-1';
+    $("#item_" + sourceElem).removeClass();
+    $("#item_" + sourceElem).addClass(class1_1);
+    var klasa = class1_1;
+
+        $.ajax({
+        type: "POST",
+        contentType: 'application/json',
+        data: JSON.stringify(klasa),
+        dataType: 'json',
+        url: '/lay/' + sourceElem
+    });
+
+};
+function lay1_2(sourceElem) {
+  var class1_2 = 'pure-u-lg-1-2';
+  $("#item_" + sourceElem).removeClass();
+  $("#item_" + sourceElem).addClass(class1_2);
+  var klasa = class1_2;
+
+      $.ajax({
+      type: "POST",
+      contentType: 'application/json',
+      data: JSON.stringify(klasa),
+      dataType: 'json',
+      url: '/lay/' + sourceElem
+  });
+
+};
+function lay1_3(sourceElem) {
+  var class1_3 = 'pure-u-lg-1-3';
+  $("#item_" + sourceElem).removeClass();
+  $("#item_" + sourceElem).addClass(class1_3);
+  var klasa = class1_3;
+
+      $.ajax({
+      type: "POST",
+      contentType: 'application/json',
+      data: JSON.stringify(klasa),
+      dataType: 'json',
+      url: '/lay/' + sourceElem
+  });
+};
+function lay1_4(sourceElem) {
+  var class1_4 = 'pure-u-lg-1-4';
+  $("#item_" + sourceElem).removeClass();
+  $("#item_" + sourceElem).addClass(class1_4);
+  var klasa = class1_4;
+
+      $.ajax({
+      type: "POST",
+      contentType: 'application/json',
+      data: JSON.stringify(klasa),
+      dataType: 'json',
+      url: '/lay/' + sourceElem
+  });
+
+};
+function lay1_5(sourceElem) {
+  var class1_5 = 'pure-u-lg-1-5';
+  $("#item_" + sourceElem).removeClass();
+  $("#item_" + sourceElem).addClass(class1_5);
+  var klasa = class1_5;
+
+      $.ajax({
+      type: "POST",
+      contentType: 'application/json',
+      data: JSON.stringify(klasa),
+      dataType: 'json',
+      url: '/lay/' + sourceElem
+  });
+};
+
+
+
+//////////////////////////////////////////////////////////////////////
+
+/*
+$("#edit-ico").click(function(){
+  $("#first-el-header").css("display", "block");
+  $("#second-el-header, #third-el-header, #fourth-el-header, #fifth-el-header").css("display", "none");
+  if (w_width <= 1055) {
+  $([document.documentElement, document.body]).animate({
+      scrollTop: $('#first-el-header').offset().top
+  }, 200);
+ }
+});
+
+$("#add-image-ico").click(function(){
+  $("#second-el-header").css("display", "block");
+  $("#first-el-header, #third-el-header, #fourth-el-header, #fifth-el-header").css("display", "none");
+  if (w_width <= 1055) {
+  $([document.documentElement, document.body]).animate({
+      scrollTop: $("#second-el-header").offset().top
+  }, 200);
+}
+});
+$("#add-attach-ico").click(function(){
+  $("#third-el-header").css("display", "block");
+  $("#second-el-header, #first-el-header, #fourth-el-header, #fifth-el-header").css("display", "none");
+  if (w_width <= 1055) {
+  $([document.documentElement, document.body]).animate({
+      scrollTop: $("#third-el-header").offset().top
+  }, 200);
+}
+});
+$("#add-contact-ico").click(function(){
+  $("#fifth-el-header").css("display", "block");
+  $("#first-el-header, #second-el-header, #third-el-header, #fourth-el-header").css("display", "none");
+  if (w_width <= 1055) {
+  $([document.documentElement, document.body]).animate({
+      scrollTop: $("#fifth-el-header").offset().top
+  }, 200);
+}
+});
+// sekcja dla instalatorów
+$("#dok-ico").click(function(){
+  $("#fourth-el-header").css("display", "block");
+  $("#first-el-header, #second-el-header, #third-el-header").css("display", "none");
+  if (w_width <= 1055) {
+  $([document.documentElement, document.body]).animate({
+      scrollTop: $("#fourth-el-header").offset().top
+  }, 200);
+}
+});*/
+// sekcja END

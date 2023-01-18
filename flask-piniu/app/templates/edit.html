@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% include "panel.html" %}
+
+  <div class="content_container"> <!-- content start -->
+<div class="header pure-g">
+<div class="pure-u-1 pure-u-lg-1-2"> <!-- edit icons start-->
+<ul id="edit-ico-list">
+<li>  <img title="DODAJ POSTA" id="edit-ico" src="{{ url_for('static', filename='icons/edit.png') }}" alt="+ posta"> </li>
+<li>  <img title="DODAJ OBRAZEK" id="add-image-ico" src="{{ url_for('static', filename='icons/add.png') }}" alt="+ obrazek"> </li>
+<li>  <img title="DODAJ ZAŁĄCZNIK" id="add-attach-ico" src="{{ url_for('static', filename='icons/clip.png') }}" alt="+ załącznik"> </li>
+<li>  <img title="DODAJ FORMULARZ KONTAKTOWY" id="add-contact-ico" src="{{ url_for('static', filename='icons/contact.png') }}" alt="+ form.kontaktowy"></li>
+<!-- <li> <a id="dok-ico" title="Dodaj dokument dla instalatorów." href="#">+ DLA INSTALATORÓW</a> </li> -->
+</ul>
+  </div><!-- edit icons END -->
+<div class="pure-u-1 pure-u-lg-1-2">
+  <h2 style="margin-top: 1em; border: 2px dotted lightgrey; padding:0.8em;">Tryb edycji : {{ current_page_id.title }}</h2>
+</div>
+{% include "post-form.html" %}
+{% include "image-form.html" %}
+{% include "attach.html" %} <!-- attachment-form -->
+{% include "dokumenty.html" %}
+<!-- fifth element of header START contactForm type of POST-->
+<div class="pure-u-1 pure-u-lg-1-2" id="fifth-el-header">
+  <form class="pure-form" action='' method="post" id="addcontact_form">
+    {{ addContactForm.hidden_tag() }}
+      <a id="add-contact" class="pure-button pure-button-secondary" href="#"> {{ addContactForm.insert() }} </a>
+    </form>
+    <ul class="hide-align">
+      <li>
+        <span class="hide-el"> <img id="hide-el-area" title="Schowaj" src="{{ url_for('static', filename='icons/hide.png') }}" alt="Schowaj"> </span>
+      </li>
+    </ul>
+</div>
+<!-- contact form END -->
+</div> <!-- header ends-->
+<!-- posts start | author username get rid of it later!-->
+<div class="post-container">
+  <span class="pure-g" id="sortable-grid">
+<span style="display: none;">
+{% set index = [] %}
+{% for post in posts %}
+{{ index.append( post.id ) }}
+{% endfor %}
+</span>
+  {% for post in posts %}
+<div class="pure-u-1 {{ post.data }}" id="item_{{ post.id }}">
+
+{% include '_post.html' %}
+<br>
+  <div class="edit_btns">
+<a id="editun" class="pure-button pure-button-secondary" href="{{ url_for('editpost', id = post.id) }}">Edycja</a>
+<a id="removen" class="pure-button pure-button-secondary" href="{{ url_for('deletepost', id = post.id) }}">Usuń</a>
+<a title="Zmień wielkość elementu - górny panel." id="checkun" class="pure-button pure-button-secondary" href="javascript: check( {{ post.id }} , {{ index }} )"> >> </a>
+
+
+<input type='text' id="picker_{{ post.id }}" /> <!-- HERE -->
+
+  </div>
+</div>
+
+  {% endfor %}
+  </span><!-- end of sortable-grid-->
+</div><!-- end of post-container -->
+<!-- posts end -->
+<hr style="opacity:0.05; position:relative; width:100%">
+</div> <!-- end content -->
+
+{% block footer %}
+  {% include 'footer.html' %}
+{% endblock %}
+
+{% endblock %}

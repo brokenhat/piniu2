@@ -1,0 +1,122 @@
+{% extends 'base_anon.html' %}
+
+{% block content %}
+<div class="content">
+<div class="header pure-g"> <!-- pure-g starts -->
+
+<div class="pure-u-1 pure-u-lg-1-2">
+
+</div>
+<div class="pure-u-1 pure-u-lg-1-2">
+  <h2 style="padding-top:0.8em; padding-bottom:0.8em; border:1px dotted lightgrey;">Tryb edycji : {{ current_page.title }}</h2>
+</div>
+
+</div> <!-- pure-g ends-->
+
+<div class="pure-g">
+<div class="pure-u-1 pure-u-lg-1-2" id="reminder-form"><!--FIRST EL_BODY START-->
+<form class="pure-form pure-form-stacked" action="" method="post">
+<fieldset>
+  <legend style="width:50%;">Dodaj wpis do historii</legend>
+  <label for="stacked-foo"> Wprowadź nr. kotła</label>
+<input type="text" name="numer" placeholder="nr."/>
+  <label for="stacked-foo"> Miejsce instalacji </label>
+<input type="text" name="miejsce" placeholder="Miejsce" />
+
+<fieldset class="pure-group">
+  <label for="stacked-foo"> Opis instalacji / zamówienia </label>
+<textarea name="opis" class="pure-input-1-2" placeholder="opis"></textarea>
+</fieldset>
+
+<label for="stacked-state"> Ustaw przypomnienie</label>
+<!--<select name="data" id="stacked-state">
+  <option>12 miesięcy</option>
+  <option> 6 miesięcy</option>
+  <option> 3 miesiące</option>
+</select>-->
+
+<p>Wybierz / wpisz datę poniżej w formacie <b>dd.mm.yyyy</b></p>
+
+{{ dateform.hidden_tag() }}
+{{ dateform.dt(class="dtpick") }}
+
+<br>&nbsp; &nbsp;
+<button type="submit" value="ustaw" class="pure-button pure-button-secondary">Dodaj do tabelki</button>
+</fieldset>
+</form>
+</div> <!-- first el- END-->
+
+
+ <div class="pure-u-1 pure-u-lg-1-2" id="reminder-list"> <!-- second -el START-->
+   <h4>Nadchodzące przeglądy : </h4>
+   <ul class="lista">
+{% for reminder in reminders %}
+  {% if reminder.reminder != None %}
+    {% if now < reminder.reminder %}
+      {% if loop.index <= 10 %}
+<li>Data: {{ reminder.reminder | string | truncate(13) }}) | w {{ reminder.miejsce | safe}} | Nr-kotła: {{ reminder.numer | safe}}</li>
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+   </ul>
+
+
+ </div><!-- second el END-->
+</div> <!-- second pure-g END -->
+
+<div class="pure-g"> <!-- third pure-g start -->
+
+<div class="pure-u-1 pure-u-lg-1-2"></div>
+<div class="pure-u-1 pure-u-lg-1-2" style="text-align:center; position:relative;">
+  <h3 style="position:relative; width:100%; background-color:#e0f7fa; padding-top:0.5em; padding-bottom:0.5em;">HISTORIA &dArr;</h3>
+</div>
+<div class="pure-u-1 pure-u-lg-1-1 pure-md-1-1 form-content"> <!-- ????-->
+
+<table class="pure-table pure-table-horizontal" style="z-index 999;">
+  <thead>
+    <tr>
+        <th>#</th>
+        <th>Numer kotła</th>
+        <th>Miejsce instalacji</th>
+        <th>Data dodania wpisu</th>
+        <th>Opis</th>
+
+        <th style="background:#eceff1;">#</th>
+        <th style="background:#eceff1;">#</th>
+        <th style="background:#eceff1;">#</th>
+        <th style="background:#eceff1;">#</th>
+        <th style="background:#eceff1;">#</th>
+
+      </tr>
+  </thead>
+  <tbody>
+{% for order in orders %}
+
+<tr id='order_{{ order.id }}' class=' {{ order.data }}'>
+    <td class="order-id-h"> {{ order.id }} </td>
+    <td contenteditable="false" id="numer_{{ order.id }}"> {{ order.numer | safe}} <i></i></td>
+    <td contenteditable="false" id="miejsce_{{ order.id }}"> {{ order.miejsce | safe}} <i></i></td>
+    <td> {{ order.timestamp | string | truncate(15) }} </td>
+    <td contenteditable="false" id="opis_{{ order.id }}"> {{ order.opis | safe}} <i></i></td>
+    <td class="order-b"> <a class="pure-button pure-button-secondary" style="background-color: #ffcdd2; font-size: 80%;" href="{{ url_for('delete_order', id=order.id) }}">Usuń</a></td>
+    <td class="order-b"> <a class="pure-button pure-button-secondary" style="background-color: #c8e6c9; font-size: 80%;" href="javascript: edit_order({{ order.id }})">Edytuj</a></td>
+    <td class="order-b"> <a class="pure-button pure-button-secondary" style="background-color: #f0f4c3; font-size: 80%;" href="javascript: oznacz({{ order.id }})">V</a></td>
+    <td class="order-b"> <a class="pure-button pure-button-secondary" style="background-color: #ede7f6; font-size: 80%;" href="javascript: odznacz({{ order.id }})">X</a></td>
+    <td class="order-b"> <a class="pure-button pure-button-secondary" style="background-color: #c8e6c9; font-size: 80%;" href="javascript: save_order({{ order.id }})">Zapisz</a></td>
+</tr>
+
+{% endfor %}
+ </tbody>
+</table>
+
+</div>
+
+</div> <!-- third pure-g END-->
+
+</div>
+{% block footer %}
+  {% include 'footer.html' %}
+{% endblock %}
+
+{% endblock %}

@@ -1,0 +1,32 @@
+<!-- form for attach somewhere -->
+
+<form class="pure-form pure-form-aligned" action="{{ url_for('contact') }}" method=post>
+  {{ contactForm.hidden_tag() }}
+<span style="display:hidden;">
+{% set a = 24 %} <!-- for size of inputs below -> -->
+{% set b = 64 %}
+</span>
+  <div class="pure-control-group">
+  <label for="aligned-name"> {{ contactForm.name.label }}</label>
+  <div id="aligned-name"> {{ contactForm.name() }} </div>
+</div>
+<div class="pure-control-group">
+  <label for="aligned-email">{{ contactForm.email.label }}</label>
+  <div id="aligned-email">{{ contactForm.email() }}</div>
+</div>
+<div class="pure-control-group">
+  <label for="aligned-foo">{{ contactForm.subject.label }}</label>
+  <div id="aligned-foo">{{ contactForm.subject() }}</div>
+</div>
+<div class="pure-control-group">
+  <label for="aligned-foo">{{ contactForm.message.label }}</label>
+  <div id="aligned-textarea">{{ contactForm.message() }}</div>
+</div>
+<div class="pure-control-group captcha-field"> <!-- poprawić ! spr. validation-->
+    {{ contactForm.recaptcha() }}
+    {% for error in contactForm.recaptcha.errors %}
+        {{ error }}
+    {% endfor %}
+</div>
+  <div class="pure-button pure-button-secondary" id="contact-submit">{{ contactForm.submit }}</div>
+</form>

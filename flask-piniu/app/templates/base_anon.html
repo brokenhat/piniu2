@@ -1,0 +1,62 @@
+{% extends 'pure/layout.html' %}
+{%- block style %}
+<link rel="icon" href="{{ url_for('static', filename='icons/lis.ico')}}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/master.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/simple-lightbox.css') }}">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Radio+Canada&display=swap" rel="stylesheet">
+{{ pure.css }}
+{%- endblock style %}
+
+{% block title %}
+    {% if title %}{{ current_page.title }} - Dominik Zarzycki{% else %}Dominik Zarzycki{% endif %}
+{% endblock %}
+
+{%- block body %}
+
+<div id="layout"> <!-- layout start -->
+
+{% include 'menu_anon.html' %}
+  <!-- alert handlling -->
+
+<div class="content_container">
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+    <div class="alert"><h2>{{ message }}</h2></div>
+    {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+<!-- main content -->
+{% block content %}
+    {% block app_content %}{% endblock %}
+{% endblock %}
+
+</div> <!-- content container end -->
+
+</div><!-- layout end --->
+
+<!-- has to be before body closing tag !!-->
+{%- block script %}
+<script type=text/javascript>
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <script src="{{ url_for('static', filename='js/ui.js') }}" charset="utf-8"></script>
+   <!--<script scr="{{ url_for('static', filename='js/spectrum.js') }}" charset="utf-8"></script>-->
+   <script src="{{ url_for('static', filename='js/simple-lightbox.js') }}" charset="utf-8"></script>
+   <script type="text/javascript" charset='utf-8'>
+     var lightbox = new SimpleLightbox('.light-img', { overlay:true, captions:false, spinner:false, });
+   </script>
+   {% if "Zamówienia" in current_page['title'] %}
+   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+   <script src="{{ url_for('static', filename='js/custom.js') }}" charset="utf-8"></script>
+   {% endif %}
+{%- endblock script %}
+
+{%- endblock body %}

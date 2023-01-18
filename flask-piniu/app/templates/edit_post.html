@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<span class="pure-g">
+
+    <div class="content pure-u-1" style="display:inline-block;">
+    <table class="pure-table">
+      <tr valign="top">
+        <td>
+            <form class="pure-form" action="" method="post">
+                {{ form.hidden_tag() }}
+
+<p class="form-label">{{ form.post.label }}</p>
+                      {{ form.post() }}<br>
+                    {% for error in form.post.errors %}
+                    <span style="color:red;">[{{ error }}]</span>
+                    {% endfor %}
+                  <p>{{ form.update() }}</p>
+            </form>
+         </td><br>
+       </tr>
+     </table>
+  </div><!-- end of 1 element of pure-g grid-->
+</span>
+{% endblock %}

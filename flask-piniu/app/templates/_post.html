@@ -1,0 +1,30 @@
+
+    <div class="content" style="background: {{ post.background }};"> <!-- HERE -->
+
+    <table class="pure-table">
+      <tr valign="top">
+
+    <!-- 1 -->{% if post.contact != None and post.contact != False %} <!-- AND ? -->
+              <!-- here goes contact form -->
+                {% include "contact.html" %}
+
+  <!-- 1 --> {% elif post.attachments != None %}
+        <td><a class="attach-link" style="text-decoration: none;" href="{{ url_for('display_attach', filename=post.attachments) }}" target="_blank">
+          <p class="raw-attach"> {{ post.attachments }}</p> <br>
+          {% if post.body != None %}
+          {{ post.body|safe }}
+          {% endif %}
+          &nbsp; <span style="color:red; text-align:right;">Pobierz</span>
+            </a></td>
+
+  <!-- 1 --> {% elif post.images != None %}
+        <td><a class="light-img" href="{{ url_for('display_image', filename='thumb-' + post.images) }}">
+          <img class="pure-img-responsive post-image" src="{{ url_for('display_image', filename='thumb-' + post.images) }}">
+            </a><br>
+        <p class="image-description">{{ post.body|safe }}</p></td><br>
+        {% else %}
+        <td>{{ post.body|safe }}</td>
+ <!-- 1 --> {% endif %}
+      </tr>
+    </table>
+    </div>

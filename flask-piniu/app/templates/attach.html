@@ -1,0 +1,21 @@
+<div class="pure-u-1 pure-u-lg-1-2 pure-u-md-1-1" id="third-el-header"> <!-- third element of header START -->
+
+  <form class="pure-form" method="post" enctype="multipart/form-data">
+    <!-- UploadImage form start -->
+    {{ attachForm.hidden_tag() }}
+
+  <p class="form-label">{{ attachForm.attach.label }}</p><br>
+   <p>{{ attachForm.descr.label }}</p><br>
+    <div id="add-attach-descr" type="text" class="pure-input-1-2">{{ attachForm.descr() }}</div>
+      {% for error in attachForm.attach.errors %}
+      <span style="color:red;">[{{ error }}]</span>
+      {% endfor %}
+    <p id="add-attach" class="pure-button">{{ attachForm.attach() }}</p>
+    <p class="pure-button click-for-hide">{{ attachForm.add() }}</p>
+  </form>
+<ul class="hide-align">
+<li>
+<span class="hide-el"> <img id="hide-el-area" title="Schowaj" src="{{ url_for('static', filename='icons/hide.png') }}" alt="Schowaj"> </span>
+</li>
+</ul>
+</div> <!-- third element of header END -->
